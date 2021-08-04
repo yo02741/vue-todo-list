@@ -1,0 +1,70 @@
+* {
+    box-sizing: border-box;
+    user-select: none;
+}
+
+/* width */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #dfc4c4;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #ecc1c1;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background-color: #dfc4c4;
+}
+
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.main {
+  display: flex;
+  flex-direction: column;
+  width: 50vw;
+  height: 50vh;
+  background-color: #e9e3e3de;
+  padding: 16px;
+  border-radius: 3px;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+}
+
+.card {
+  height: calc(100% - 54px);
+}
+
+ul {
+  height: 100%;
+  overflow-y: scroll;
+}
+
+.list-group-flush>.list-group-item:last-child {
+  border-bottom-width: 1px;
+}
+
+input[type=checkbox], label {
+  cursor: pointer;
+}
+
+input[type=checkbox]:checked + label {
+  text-decoration: line-through;
+}
