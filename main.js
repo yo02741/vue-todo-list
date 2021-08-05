@@ -1,19 +1,26 @@
 Vue.createApp({
   data() {
     return {
-      list: [
-        { id: 1, describe: 'learn Vue3', done: true },
-        { id: 2, describe: 'learn typescript', done: false },
-        { id: 3, describe: 'learn bootstrap5', done: true },
-        { id: 4, describe: 'learn graphQL', done: false },
-      ],
+      list: [],
       typeArea: '',
-      filter: 'all', // all , notdone , done,
+      filter: 'all',
+      filterList: [
+        { key: 'all', value: '全部' },
+        { key:'notdone', value: '未完成' },
+        { key:'done', value: '已完成' }
+      ],
 
       toast: null,
       toastText: '',
       toastStatus: '',
+
+      modal:null,
+      modalText: '',
+      deleteTarget: '',
     }
+  },
+  mounted() {
+    this.getLocalStorage()
   },
   computed: {
     showlist() {
@@ -43,7 +50,22 @@ Vue.createApp({
       }
     }
   },
+  watch: {
+    list: {
+      handler() {
+        this.saveToLocalStorage()
+      },
+      deep: true
+    }
+  },
   methods: {
+    getLocalStorage() {
+      if (window.localStorage.length === 0) return
+      else this.list = JSON.parse(window.atob(window.localStorage.getItem('list')))
+    },
+    saveToLocalStorage() {
+      window.localStorage.setItem('list', window.btoa(JSON.stringify(this.list)))
+    },
     add() {
       if (this.typeArea === '') {
         this.toastText = '請輸入 準備要做的任務！'
@@ -63,25 +85,25 @@ Vue.createApp({
       this.toastText = '已新增任務！'
       this.toastStatus = 'success'
       this.toastShow()
-      const nextid =  Math.max(...this.list.map(item => item.id)) + 1
+      const nextid =  this.list.length === 0 ? 1 : Math.max(...this.list.map(item => item.id)) + 1
       this.list.push({
-        id: nextid,
+        id: (nextid === null) ? 1 : nextid,
         describe: this.typeArea,
-        done: false
+        done: false,
+        edit: false,
       })
       this.typeArea = ''
       this.filter = 'all'
     },
-    update() {
-      console.log('up');
-    },
     remove(id) {
       const index = this.list.findIndex(item => item.id === id)
       this.list.splice(index, 1)
+      this.modal.hide()
     },
     removeAll() {
       this.list.length = 0
       this.filter = 'all'
+      this.modal.hide()
     },
     switchFilter(type) {
       this.filter = type
@@ -95,6 +117,18 @@ Vue.createApp({
       }
       this.toast = new bootstrap.Toast(element, option)
       this.toast.show()
+    },
+    modalShow(target) {
+      console.log(target);
+      this.deleteTarget = target
+
+      if (target !== 'all') {
+        const name = this.list.find(item => item.id === target).describe
+        this.modalText = `是否移除待辦事項 ${ name } ？`
+      } else this.modalText = '是否移除所有待辦事項？'
+      const element = document.querySelector('#Modal')
+      this.modal = new bootstrap.Modal(element)
+      this.modal.show()
     },
   },
 }).mount('#app');

@@ -1,32 +1,40 @@
+@import url('https://fonts.googleapis.com/css2?family=Staatliches&display=swap');
+
 * {
-    box-sizing: border-box;
-    user-select: none;
+  box-sizing: border-box;
+  user-select: none;
+  font-family: 'Staatliches', sans-serif;
 }
 
 /* width */
 ::-webkit-scrollbar {
-  width: 8px;
+  width: 5px;
 }
 
 /* Track */
 ::-webkit-scrollbar-track {
-  background: #f1f1f1;
+  background: #ffd4af62;
 }
 
 /* Handle */
 ::-webkit-scrollbar-thumb {
-  background: #dfc4c4;
+  background: #888870;
+  border-radius: 5px;
 }
 
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
-  background: #ecc1c1;
+  background: #888870bd;
 }
 
 body {
   margin: 0;
   padding: 0;
-  background-color: #dfc4c4;
+  background-color: #ffd5af;
+}
+
+[v-cloak] {
+  display: none;
 }
 
 .container {
@@ -40,7 +48,8 @@ body {
 .main {
   display: flex;
   flex-direction: column;
-  width: 50vw;
+  width: 500px;
+  min-width: 450px;
   height: 50vh;
   background-color: #e9e3e3de;
   padding: 16px;
@@ -48,8 +57,43 @@ body {
   box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
 }
 
+
+.todo-input {
+  width: 85%;
+  border: 2px solid #e59a59;
+  background-color: transparent;
+  transition: all .5s ease;
+}
+
+.todo-input:focus {
+  background-color: transparent;
+  border-color: #e59a59;
+  box-shadow: 0 0 0 0.25rem #8888708e;
+}
+
+.add-btn {
+  width: 15%;
+  margin-left: 16px;
+  color: #ffffff;
+  font-weight: bold;
+  background-color: #e59a59;
+  transition: all .3s ease;
+}
+
+.add-btn:hover {
+  color: #ffffff;
+  background-color: #e59a59d8;
+}
+
+.add-btn:focus {
+  box-shadow: 0 0 0 0.25rem #8888708e;
+}
+
 .card {
   height: calc(100% - 54px);
+  max-height: calc(100% - 54px);
+  background-color: transparent;
+  overflow: hidden;
 }
 
 ul {
@@ -57,8 +101,64 @@ ul {
   overflow-y: scroll;
 }
 
+.list-group-item {
+  background-color: transparent;
+}
+
 .list-group-flush>.list-group-item:last-child {
   border-bottom-width: 1px;
+}
+
+.form-check {
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.form-check-input {
+  min-width: 20px;
+  min-height: 20px;
+  background-color: transparent;
+  margin-right: 20px;
+}
+
+.form-check-input:checked {
+  background-color: #e59a59;
+  border-color: #e59a59;
+}
+
+.form-check-input:focus {
+  border-color: #e59a59;
+  box-shadow: 0 0 0 0.25rem #8888708e;
+}
+
+.form-check .form-control {
+  box-sizing: border-box;
+  background-color: transparent;
+  border: 2px solid #e59a59;
+  text-align: center;
+}
+
+.form-check .form-control:focus {
+  box-shadow: 0 0 0 0.25rem #8888708e;
+}
+
+.form-check .btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 30px;
+  height: 30px;
+}
+
+.form-check .btn:focus {
+  box-shadow: 0 0 0 0.25rem #8888708e;
+}
+
+label {
+  width: 100%;
+  height: 40px;
+  line-height: 40px;
 }
 
 input[type=checkbox], label {
@@ -68,3 +168,22 @@ input[type=checkbox], label {
 input[type=checkbox]:checked + label {
   text-decoration: line-through;
 }
+
+.filter-list a {
+  color: #712e1e;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+.filter-list a.active {
+  background: linear-gradient(transparent, #e59a59);
+}
+
+.filter-list a:not(:last-child) {
+  margin-right: 15px;
+}
+
+.modal-content {
+  background-color: #e9e3e3;
+}
+
