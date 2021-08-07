@@ -22,7 +22,7 @@
         </div>
         <div class="card text-center" v-cloak>
           <ul class="list-group list-group-flush text-left" id="todoList">
-            <li  class="list-group-item" v-for="item in showlist" :key="item.id">
+            <li  class="list-group-item" v-for="(item, index) in showlist" :key="item.id">
               <div class="d-flex">
                 <div class="form-check">
                   <input :id="item.id"
@@ -30,19 +30,20 @@
                       class="form-check-input"
                       :value="item.describe"
                       @click="item.done = !item.done"
+                      @change="saveToLocalStorage"
                       :checked="item.done">
                     <label v-if="!item.edit" :for="item.id">{{ item.describe }}</label>
-                    <input v-else class="form-control me-3" type="text" v-model="item.describe"/>
+                    <input v-else class="form-control me-3" type="text" v-model="newValue"/>
                     <button type="button"
                       v-if="!item.edit"
                       class="btn"
-                      @click="item.edit = true">
+                      @click="updateRequest(index)">
                       <i class="fas fa-edit"></i>
                     </button>
                     <button type="button"
                       v-if="item.edit"
                       class="btn"
-                      @click="item.edit = false">
+                      @click="update(index)">
                       <i class="fas fa-check"></i>
                     </button>  
                     <button type="button"

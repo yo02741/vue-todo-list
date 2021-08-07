@@ -10,6 +10,9 @@ Vue.createApp({
         { key:'done', value: '已完成' }
       ],
 
+      oldValue: '',
+      newValue: '',
+
       toast: null,
       toastText: '',
       toastStatus: '',
@@ -50,14 +53,6 @@ Vue.createApp({
       }
     }
   },
-  watch: {
-    list: {
-      handler() {
-        this.saveToLocalStorage()
-      },
-      deep: true
-    }
-  },
   methods: {
     getLocalStorage() {
       if (window.localStorage.length === 0) return
@@ -94,16 +89,35 @@ Vue.createApp({
       })
       this.typeArea = ''
       this.filter = 'all'
+
+      this.saveToLocalStorage()
+    },
+    updateRequest(index) {
+      this.oldValue = this.list[index].describe
+      this.newValue = this.list[index].describe
+      this.list[index].edit = true
+    },
+    update(index) {
+      if (this.oldValue === this.newValue) {
+        this.list[index].edit = false
+        return
+      } else {
+        this.list[index].describe = this.newValue
+        this.list[index].edit = false
+        this.saveToLocalStorage()
+      }
     },
     remove(id) {
       const index = this.list.findIndex(item => item.id === id)
       this.list.splice(index, 1)
       this.modal.hide()
+      this.saveToLocalStorage()
     },
     removeAll() {
       this.list.length = 0
       this.filter = 'all'
       this.modal.hide()
+      this.saveToLocalStorage()
     },
     switchFilter(type) {
       this.filter = type
@@ -119,7 +133,6 @@ Vue.createApp({
       this.toast.show()
     },
     modalShow(target) {
-      console.log(target);
       this.deleteTarget = target
 
       if (target !== 'all') {
