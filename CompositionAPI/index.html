@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vue3 Week3</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css" rel="stylesheet"
+      integrity="sha384-wEmeIV1mKuiNpC+IOBjI7aAzPcEZeedi5yW5f2yOq55WWLwNGmvvx4Um1vskeMj0" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
+    <link rel="stylesheet" href="./style.css">
+  </head>
+
+  <body>
+    <div id="app" class="container">
+      <div class="main">
+        <div class="d-flex mb-3">
+          <input type="text" class="form-control todo-input" placeholder="準備要做的任務"
+            id="newTodo" v-model="typeArea">
+          <button class="btn add-btn" type="button" id="addTodo" @click="add">新增</button>
+        </div>
+        <div class="card text-center" v-cloak>
+          <ul class="list-group list-group-flush text-left" id="todoList">
+            <li  class="list-group-item" v-for="(item, index) in showlist" :key="item.id">
+              <div class="d-flex">
+                <div class="form-check">
+                  <input :id="item.id"
+                      type="checkbox"
+                      class="form-check-input"
+                      :value="item.describe"
+                      @click="item.done = !item.done"
+                      @change="saveToLocalStorage"
+                      :checked="item.done">
+                    <label v-if="!item.edit" :for="item.id">{{ item.describe }}</label>
+                    <input v-else class="form-control me-3" type="text" v-model="newValue"/>
+                    <button type="button"
+                      v-if="!item.edit"
+                      class="btn"
+                      @click="updateRequest(index)">
+                      <i class="fas fa-edit"></i>
+                    </button>
+                    <button type="button"
+                      v-if="item.edit"
+                      class="btn"
+                      @click="update(index)">
+                      <i class="fas fa-check"></i>
+                    </button>  
+                    <button type="button"
+                      class="btn remove"
+                      @click="modalShow(item.id)">
+                      <i class="fas fa-times"></i>
+                    </button>              
+                </div>
+              </div>
+            </li>
+          </ul>
+          <div class="card-footer d-flex flex-md-row flex-column justify-content-between">
+            {{ taskCountMsg }}
+            <div class="filter-list">
+              <a href="#" v-for="(item, index) in filterList" :key="index"
+                :class="{ 'active' : filter === item.key }" @click="switchFilter(item.key)">{{ item.value }}</a>
+              <a href="#" @click="modalShow('all')">清除所有任務</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- toast -->
+      <div class="position-fixed top-0 start-50 translate-middle-x mt-3" style="z-index: 11">
+        <div id="Toast"
+          class="toast hide d-flex text-white"
+          :class="toastStatus === 'error' ? 'bg-danger' : toastStatus === 'success' ? 'bg-success' : ''"
+          role="alert" aria-live="assertive" aria-atomic="true">
+          <div class="toast-body">
+            <span class="fw-bold">{{ toastText }}</span>
+          </div>
+          <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+      </div>
+      <!-- modal -->
+      <div class="modal fade" id="Modal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">移除待辦事項</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <span class="m-3">{{ modalText }}</span>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
+              <button type="button" class="btn btn-danger"
+                @click="(deleteTarget === 'all') ? removeAll() : remove(deleteTarget)">確定</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-p34f1UUtsS3wqzfto5wAAmdvj+osOnFyQFpp4Ua3gs/ZVWx6oOypYoCJhGGScy+8"
+      crossorigin="anonymous"></script>
+    <script type="module" src="./main.js"></script>
+  </body>
+
+</html>
